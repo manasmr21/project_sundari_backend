@@ -1,0 +1,9 @@
+model Users {
+    id        String   @id @default(uuid())
+    fullname  String
+    email     String   @unique
+    password  String
+    verified  Boolean  @default(false)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
