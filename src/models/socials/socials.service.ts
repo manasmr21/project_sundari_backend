@@ -53,11 +53,18 @@ export const deleteSocials = async (
     data: { id: number },
     prisma: PrismaClient
 ) => {
-    const social = await prisma.socials.delete({
-        where: {
-            id: data.id,
-        },
-    });
+    try {
+        const social = await prisma.socials.delete({
+            where: {
+                id: data.id,
+            },
+        });
 
-    return social;
+        return social;
+    } catch (err) {
+        if (err instanceof Error && "code" in err && err.code === "P2025") {
+            throw new HTTPException(404, { message: "Social link not found" });
+        }
+        throw err;
+    }
 };

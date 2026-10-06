@@ -71,8 +71,8 @@ socialsRoutes.patch(
         try {
             const social = await updateSocials({ id, ...data }, prisma);
             return c.json({ success: true, message: "Social updated successfully", data: social }, 200);
-        } catch (error: any) {
-            if (error?.code === "P2025") {
+        } catch (error) {
+            if (error instanceof Error && "code" in error && error.code === "P2025") {
                 throw new HTTPException(404, { message: "Social not found" });
             }
             throw error;
@@ -91,8 +91,8 @@ socialsRoutes.delete(
         try {
             const social = await deleteSocials({ id }, prisma);
             return c.json({ success: true, message: "Social deleted successfully", data: social }, 200);
-        } catch (error: any) {
-            if (error?.code === "P2025") {
+        } catch (error) {
+            if (error instanceof Error && "code" in error && error.code === "P2025") {
                 throw new HTTPException(404, { message: "Social not found" });
             }
             throw error;

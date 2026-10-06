@@ -1,9 +1,9 @@
 import { z } from "zod";
 
 export const validateSocials = z.object({
-    platform: z.string(),
-    url: z.string(),
-    icon: z.string()
+    platform: z.string().min(2, "Platform name must be at least 2 characters").max(50),
+    url: z.string().url("Must be a valid URL"),
+    icon: z.string().min(1, "Icon identifier is required").max(100),
 });
 
 export const validateUpdateSocials = validateSocials.partial();

@@ -1,5 +1,6 @@
 // implement admin authorization later on
 
+import { HTTPException } from "hono/http-exception";
 import { PrismaClient } from "../../generated/prisma/client";
 import { CreateMenuTypes, UpdateMenuTypes } from "./menu.validator";
 
@@ -52,11 +53,18 @@ export const deleteMenu = async (
     data: { id: number },
     prisma: PrismaClient
 ) => {
-    const menu = await prisma.menus.delete({
-        where: {
-            id: data.id,
-        },
-    });
+    try {
+        const menu = await prisma.menus.delete({
+            where: {
+                id: data.id,
+            },
+        });
 
-    return menu;
+        return menu;
+    } catch (err) {
+        if (err instanceof Error && "code" in err && err.code === "P2025") {
+            throw new HTTPException(404, { message: "Menu not found" });
+        }
+        throw err;
+    }
 };

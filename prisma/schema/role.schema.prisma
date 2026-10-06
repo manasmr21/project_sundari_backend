@@ -3,6 +3,7 @@ model Roles {
     name        String   @unique
     slug        String   @unique
     description String?
+    users       Users[]
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
 }

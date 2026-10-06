@@ -1,5 +1,6 @@
 // implement admin authorization later on
 
+import { HTTPException } from "hono/http-exception";
 import { PrismaClient } from "../../generated/prisma/client";
 import { SiteDataType, UpdateSiteDataType } from "./siteData.validator";
 
@@ -56,11 +57,18 @@ export const deleteSiteData = async (
     data: { id: number },
     prisma: PrismaClient
 ) => {
-    const siteData = await prisma.siteData.delete({
-        where: {
-            id: data.id,
-        },
-    });
+    try {
+        const siteData = await prisma.siteData.delete({
+            where: {
+                id: data.id,
+            },
+        });
 
-    return siteData;
+        return siteData;
+    } catch (err) {
+        if (err instanceof Error && "code" in err && err.code === "P2025") {
+            throw new HTTPException(404, { message: "Site data not found" });
+        }
+        throw err;
+    }
 };

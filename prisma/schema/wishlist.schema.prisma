@@ -1,0 +1,11 @@
+model Wishlist {
+    id        Int      @id @default(autoincrement())
+    userId    String
+    productId String
+    user      Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    product   Products @relation(fields: [productId], references: [id], onDelete: Cascade)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@unique([userId, productId])
+}

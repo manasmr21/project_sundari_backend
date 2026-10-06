@@ -2,9 +2,9 @@ import { z } from "zod";
 
 export const validateSiteData = z.object({
     siteName: z.string().min(1, "Site name is required"),
-    logo: z.string().min(1, "Logo is required"),
-    ribbonText: z.string(),
-    footerText: z.string(),
+    logo: z.string().url("Invalid logo URL").or(z.string().min(1, "Logo is required")),
+    ribbonText: z.string().min(1, "Ribbon text is required"),
+    footerText: z.string().min(1, "Footer text is required"),
 });
 
 export const validateUpdateSiteData = validateSiteData.partial();

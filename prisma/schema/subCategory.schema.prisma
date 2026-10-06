@@ -1,0 +1,12 @@
+model SubCategories {
+    id          Int        @id @default(autoincrement())
+    name        String
+    slug        String     @unique
+    categoryId  Int
+    category    Categories @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+    description String?
+    image       String?
+    products    Products[]
+    createdAt   DateTime   @default(now())
+    updatedAt   DateTime   @updatedAt
+}

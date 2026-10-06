@@ -1,0 +1,11 @@
+model Categories {
+    id            Int             @id @default(autoincrement())
+    name          String          @unique
+    slug          String          @unique
+    description   String?
+    image         String?
+    subCategories SubCategories[]
+    products      Products[]
+    createdAt     DateTime        @default(now())
+    updatedAt     DateTime        @updatedAt
+}

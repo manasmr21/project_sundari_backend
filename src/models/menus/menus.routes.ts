@@ -75,8 +75,8 @@ menusRoutes.patch(
         try {
             const menu = await updateMenu({ id, ...data }, prisma);
             return c.json({ success: true, message: "Menu updated successfully", data: menu }, 200);
-        } catch (error: any) {
-            if (error?.code === "P2025") {
+        } catch (error) {
+            if (error instanceof Error && "code" in error && error.code === "P2025") {
                 throw new HTTPException(404, { message: "Menu not found" });
             }
             throw error;
@@ -95,8 +95,8 @@ menusRoutes.delete(
         try {
             const menu = await deleteMenu({ id }, prisma);
             return c.json({ success: true, message: "Menu deleted successfully", data: menu }, 200);
-        } catch (error: any) {
-            if (error?.code === "P2025") {
+        } catch (error) {
+            if (error instanceof Error && "code" in error && error.code === "P2025") {
                 throw new HTTPException(404, { message: "Menu not found" });
             }
             throw error;

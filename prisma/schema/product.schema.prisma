@@ -1,0 +1,22 @@
+model Products {
+    id            String          @id @default(uuid())
+    name          String
+    slug          String          @unique
+    description   String?
+    price         Float
+    discountPrice Float?          @map("discount_price")
+    categoryId    Int
+    category      Categories      @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+    subCategoryId Int?
+    subCategory   SubCategories?  @relation(fields: [subCategoryId], references: [id], onDelete: SetNull)
+    brandId       Int?
+    brand         Brands?         @relation(fields: [brandId], references: [id], onDelete: SetNull)
+    images        ProductImages[]
+    thumbnail     String?
+    stock         Int             @default(0)
+    orderItems    OrderItems[]
+    cart          Cart[]
+    wishlist      Wishlist[]
+    createdAt     DateTime        @default(now())
+    updatedAt     DateTime        @updatedAt
+}

@@ -71,8 +71,8 @@ siteDataRoutes.patch(
         try {
             const siteData = await updateSiteData({ id, ...data }, prisma);
             return c.json({ success: true, message: "Site data updated successfully", data: siteData }, 200);
-        } catch (error: any) {
-            if (error?.code === "P2025") {
+        } catch (error) {
+            if (error instanceof Error && "code" in error && error.code === "P2025") {
                 throw new HTTPException(404, { message: "Site data not found" });
             }
             throw error;
@@ -91,8 +91,8 @@ siteDataRoutes.delete(
         try {
             const siteData = await deleteSiteData({ id }, prisma);
             return c.json({ success: true, message: "Site data deleted successfully", data: siteData }, 200);
-        } catch (error: any) {
-            if (error?.code === "P2025") {
+        } catch (error) {
+            if (error instanceof Error && "code" in error && error.code === "P2025") {
                 throw new HTTPException(404, { message: "Site data not found" });
             }
             throw error;

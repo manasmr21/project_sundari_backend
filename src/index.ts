@@ -2,9 +2,7 @@ import { Hono } from 'hono'
 import routes from './routes'
 import { HTTPException } from 'hono/http-exception'
 
-export type Bindings = {
-  DB: D1Database
-}
+export type Bindings = CloudflareBindings;
 
 const app = new Hono<{ Bindings: Bindings }>()
 

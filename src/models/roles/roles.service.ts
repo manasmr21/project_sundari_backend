@@ -22,7 +22,6 @@ export const createRole = async (data: CreateRoleType, prisma: PrismaClient) => 
         throw new HTTPException(400, { message: "Invalid role name or slug" });
     }
 
-    // Check for duplicate name or slug
     const existing = await prisma.roles.findFirst({
         where: {
             OR: [{ name: data.name }, { slug }],
@@ -175,17 +174,14 @@ export const updateRole = async (
 };
 
 export const deleteRole = async (id: number, prisma: PrismaClient) => {
-    const existing = await prisma.roles.findUnique({
-        where: { id },
-    });
-
-    if (!existing) {
-        throw new HTTPException(404, { message: "Role not found" });
+    try {
+        return await prisma.roles.delete({
+            where: { id },
+        });
+    } catch (err) {
+        if (err instanceof Error && "code" in err && err.code === "P2025") {
+            throw new HTTPException(404, { message: "Role not found" });
+        }
+        throw err;
     }
-
-    const deleted = await prisma.roles.delete({
-        where: { id },
-    });
-
-    return deleted;
 };

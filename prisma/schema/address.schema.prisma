@@ -1,0 +1,17 @@
+model Address {
+    id        Int      @id @default(autoincrement())
+    userId    String
+    user      Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    name      String
+    address   String
+    city      String
+    state     String
+    pin       Int
+    country   String   @default("India")
+    phone     String
+    email     String?
+    isDefault Boolean  @default(false)
+    orders    Orders[]
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}

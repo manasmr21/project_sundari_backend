@@ -1,0 +1,12 @@
+model Discounts {
+    id          Int      @id @default(autoincrement())
+    name        String
+    slug        String   @unique
+    description String?
+    type        String
+    discount    Float
+    startDate   DateTime
+    endDate     DateTime
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+}
